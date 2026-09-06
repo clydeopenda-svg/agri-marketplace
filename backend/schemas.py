@@ -20,7 +20,7 @@ class ProduceSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
         ordered = True
 
-    farmer = ma.Nested(lambda: UserSchema(exclude=("produce_listings", "orders_placed")))
+    farmer = ma.Nested(lambda: UserSchema(only=("id", "name", "email", "role", "location", "phone")))
     order_items = ma.Nested(lambda: OrderItemSchema(), many=True, exclude=("produce", "order"))
 
 
@@ -42,7 +42,7 @@ class OrderSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
         ordered = True
 
-    buyer = ma.Nested(lambda: UserSchema(exclude=("produce_listings", "orders_placed")))
+    buyer = ma.Nested(lambda: UserSchema(only=("id", "name", "email", "role", "location", "phone")))
     items = ma.Nested(lambda: OrderItemSchema(exclude=("order", "produce")), many=True)
 
 

@@ -19,7 +19,9 @@ def create_app():
         "postgresql://postgres:postgres@localhost:5432/agri_marketplace",
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "dev-secret-change-me")
+    app.config["JWT_SECRET_KEY"] = os.getenv(
+        "JWT_SECRET_KEY", "dev-secret-change-me-use-a-long-random-value"
+    )
 
     db.init_app(app)
     migrate.init_app(app, db)

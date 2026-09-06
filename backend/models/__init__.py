@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from extensions import db, ma
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -13,7 +13,7 @@ class User(db.Model):
     role = db.Column(db.String(20), nullable=False)  # "farmer" or "buyer"
     location = db.Column(db.String(120))
     phone = db.Column(db.String(20))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     produce_listings = db.relationship(
         "Produce", back_populates="farmer", cascade="all, delete-orphan"
@@ -41,7 +41,7 @@ class Produce(db.Model):
     quantity_available = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
     image_url = db.Column(db.String(255))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     farmer = db.relationship("User", back_populates="produce_listings")
     order_items = db.relationship(
@@ -56,7 +56,7 @@ class Order(db.Model):
     buyer_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     status = db.Column(db.String(20), default="pending")  # pending, confirmed, delivered, cancelled
     total_amount = db.Column(db.Float, default=0.0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     buyer = db.relationship("User", back_populates="orders_placed")
     items = db.relationship(

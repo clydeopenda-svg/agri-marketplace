@@ -39,6 +39,7 @@ class RegisterResource(Resource):
         return {
             "user": user_schema.dump(user),
             "access_token": token,
+            "refresh_token": create_refresh_token(identity=str(user.id)),
         }, 201
 
 
